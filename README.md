@@ -10,31 +10,8 @@ mkdir -p k8s
 
 # Estructura del directorio
 
-cv-kubernetes-helm/
-├── app/
-│   ├── Dockerfile
-│   ├── nginx.conf
-│   └── html/
-│       ├── index.html
-│       └── styles.css
-├── helm-chart/
-│   ├── Chart.yaml
-│   ├── values.yaml
-│   └── templates/
-│       ├── _helpers.tpl
-│       ├── deployment.yaml
-│       ├── service.yaml
-│       ├── ingress.yaml
-│       ├── configmap.yaml
-│       ├── hpa.yaml
-│       └── serviceaccount.yaml
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yaml
-├── kind-config.yaml
-├── setup.sh
-├── Makefile
-└── README.md
+<img width="442" height="856" alt="image" src="https://github.com/user-attachments/assets/08f31745-e967-4f48-801c-dcf601d813e8" />
+
 
 
 # Instalar Docker
@@ -107,7 +84,7 @@ make scale REPLICAS=5
 make watch-pods
 
 # Acceder a un pod
-make exec-pod POD=<nombre-del-pod>
+make exec-pod POD=nombre-del-pod
 
 # Actualizar después de cambios
 make upgrade
