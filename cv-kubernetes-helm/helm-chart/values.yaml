@@ -1,0 +1,143 @@
+# Default values for cv-pedro-merino Helm chart
+
+# Configuración de la aplicación
+app:
+  name: cv-web
+  version: "1.0.0"
+
+# Configuración de réplicas
+replicaCount: 3
+
+# Configuración de la imagen
+image:
+  repository: cv-web
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+# Estrategia de actualización
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+# Configuración del servicio
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  annotations: {}
+
+# Configuración de Ingress
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: cv.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  # Descomentar para HTTPS
+  # tls:
+  #   - secretName: cv-tls
+  #     hosts:
+  #       - cv.local
+
+# Recursos computacionales
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Autoscaling (HPA)
+autoscaling:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+# Health checks
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 80
+  initialDelaySeconds: 15
+  periodSeconds: 20
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 80
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# Security Context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 101
+  #fsGroup: 101
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+
+# Pod Security Context
+podSecurityContext:
+  fsGroup: 101
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity rules
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - cv-web
+          topologyKey: kubernetes.io/hostname
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# ConfigMap data
+configMap:
+  enabled: true
+  data:
+    ENVIRONMENT: "kubernetes"
+    APP_VERSION: "1.0.0"
+
+# ServiceAccount
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Monitoring
+monitoring:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+    interval: 30s

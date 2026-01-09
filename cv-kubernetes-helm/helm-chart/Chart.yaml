@@ -1,0 +1,19 @@
+apiVersion: v2
+name: cv-pedro-merino
+description: A Helm chart for deploying Pedro Merino's CV on Kubernetes
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - cv
+  - devops
+  - kubernetes
+  - helm
+home: https://github.com/pdrmerinodlg/cv-kubernetes-helm
+sources:
+  - https://github.com/pdrmerinodlg/cv-kubernetes-helm
+maintainers:
+  - name: Pedro Merino
+    email: pdrmerinodlg@gmail.com
+    url: https://www.linkedin.com/in/pedro-merino-4b87b7221/
+icon: https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.png
